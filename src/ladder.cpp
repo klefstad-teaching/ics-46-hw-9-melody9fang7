@@ -29,13 +29,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     set<string> visited;
     visited.insert(begin_word);
     while(!ladder_queue.empty()){
-        ladder = ladder_queue.pop();
+        ladder = ladder_queue.front();
+        ladder_queue.pop();
         last_word = ladder_queue.back();
-        for(word in word_list):
+        for(auto word : word_list):
         if(is_adjacent(last_word, word)){
-            if (!visited.check(word)){
+            if (visited.find(word) == visited.end()){
                 visited.insert(word);
-                queue<vector<string>> new_ladder = ladder;
+                vector<string> new_ladder = ladder;
                 new_ladder.push_back(word);
                 if (word == end_word){
                     return new_ladder;
@@ -66,7 +67,11 @@ void print_word_ladder(const vector<string>& ladder){
 }
 void verify_word_ladder(){
     string startword;
+    cout << "enter your starting word" << endl;
+    cin >> startword;
+    cout << "enter your ending word" << endl;
     string endword;
+    cin >> endword;
     vector<string> word_ladder;
     set<string> dict;
     load_words(dict, "words.txt");
@@ -75,5 +80,9 @@ void verify_word_ladder(){
         return;
     }
     word_ladder = generate_word_ladder(startword, endword, dict);
+    if (word_ladder.empty()) {
+        error("", "", "No word ladder found.");
+        return;
+    }
 
 }
