@@ -4,7 +4,7 @@ void error(string word1, string word2, string msg){
 }
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
     int diff = 0;
-    for(int i = 0; i < min(str1.size(), str2.size()); i++){
+    for(int i = 0; i < min(int(str1.size()), int(str2.size())); i++){
         if (str1[i] != str2[i]){
             diff++;
         }
@@ -14,9 +14,10 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     }else if (diff == d && str1.size() == str2.size()){
         return true;
     }
+    return false;
 }
 bool is_adjacent(const string& word1, const string& word2){
-    if(abs(word1.size() - word2.size()) > 1){
+    if(abs(int(word1.size() - word2.size())) > 1){
         return false;
     }else{
         return edit_distance_within(word1, word2, 1);
@@ -25,23 +26,24 @@ bool is_adjacent(const string& word1, const string& word2){
 }
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
     queue<vector<string>> ladder_queue;
-    ladder_queue.push([begin_word]);
+    ladder_queue.push({begin_word});
     set<string> visited;
     visited.insert(begin_word);
     while(!ladder_queue.empty()){
-        ladder = ladder_queue.front();
+        vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
-        last_word = ladder_queue.back();
-        for(auto word : word_list):
-        if(is_adjacent(last_word, word)){
-            if (visited.find(word) == visited.end()){
-                visited.insert(word);
-                vector<string> new_ladder = ladder;
-                new_ladder.push_back(word);
-                if (word == end_word){
-                    return new_ladder;
+        string& last_word = ladder.back();
+        for(auto word : word_list){
+            if(is_adjacent(last_word, word)){
+                if (visited.find(word) == visited.end()){
+                    visited.insert(word);
+                    vector<string> new_ladder = ladder;
+                    new_ladder.push_back(word);
+                    if (word == end_word){
+                        return new_ladder;
+                    }
+                    ladder_queue.push(new_ladder);
                 }
-                ladder_queue.push(new_ladder);
             }
         }
     }
@@ -74,12 +76,13 @@ void verify_word_ladder(){
     cin >> endword;
     vector<string> word_ladder;
     set<string> dict;
-    load_words(dict, "words.txt");
+    load_words(dict, "src/words.txt");
     if(startword == endword){
         error("", "", "words are the same");
         return;
     }
     word_ladder = generate_word_ladder(startword, endword, dict);
+    print_word_ladder(word_ladder);
     if (word_ladder.empty()) {
         error("", "", "No word ladder found.");
         return;
