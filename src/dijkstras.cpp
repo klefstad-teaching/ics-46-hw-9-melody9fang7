@@ -1,7 +1,7 @@
 #include "dijkstras.h"
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
-    int numVertices = graph.size();
+    int numVertices = G.size();
     vector<int> distances(numVertices, INF);
     vector<bool> visited(numVertices, false);
     distances[source] = 0;
@@ -12,7 +12,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
         int u = minHeap.extractVertexWithMinimumWeight().first;
         if(visited[u]) continue;
         visited[u] = true;
-        for(Edge edge: graph[u]){
+        for(Edge edge: G[u]){
             int v = edge.dest;
             int weight = edge.second;
             if(!visited[v] &&distances[u] + weight < distances[v]){
@@ -37,7 +37,8 @@ void print_path(const vector<int>& v, int total){
         error("", "", "no path found");
         return;
     }
-    cout << "shortest path: ";
+    cout 
+     "shortest path: ";
     for(size_t i = 0; i < v.size(); i++){
         cout << v[i];
     }
