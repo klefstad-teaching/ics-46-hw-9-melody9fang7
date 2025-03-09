@@ -37,9 +37,10 @@ vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector
 }
 void print_path(const vector<int>& v, int total){
     if (v.empty()){
+        cout << "No word ladder found" << endl;
         return;
     }
-    cout << "shortest path: ";
+    cout << "Word ladder found: ";
     for(size_t i = 0; i < v.size(); i++){
         cout << v[i] << " ";
     }
