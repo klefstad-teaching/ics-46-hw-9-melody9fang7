@@ -11,7 +11,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
                 diff++;
             }
         }
-        return diff == d;
+        return diff <= d;
     }
     if (abs(int(str1.size() - str2.size())) == 1) {
         if(str1.size() > str2.size()){
