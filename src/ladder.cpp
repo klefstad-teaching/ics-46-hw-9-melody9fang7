@@ -4,14 +4,14 @@ void error(string word1, string word2, string msg){
 }
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
     int diff = 0;
-    for(int i = 0; i < min(word1.size(), word2.size()); i++){
-        if (word1[i] != word2[i]){
+    for(int i = 0; i < min(str1.size(), str2.size()); i++){
+        if (str1[i] != str2[i]){
             diff++;
         }
     }
     if(diff == 0){
         return true;
-    }else if (diff == d && word1.size() == word2.size()){
+    }else if (diff == d && str1.size() == str2.size()){
         return true;
     }
 }
