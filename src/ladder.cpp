@@ -66,6 +66,7 @@ void print_word_ladder(const vector<string>& ladder){
     for (auto s: ladder){
         cout << s << " ";
     }
+    cout << endl;
 }
 void verify_word_ladder(){
     string startword;
