@@ -3,16 +3,33 @@ void error(string word1, string word2, string msg){
     cout << word1 << word2 << msg << endl;
 }
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
-    int diff = 0;
-    for(int i = 0; i < min(int(str1.size()), int(str2.size())); i++){
-        if (str1[i] != str2[i]){
-            diff++;
+    if (abs(int(str1.size() - str2.size())) > 1) return false;
+    if (abs(int(str1.size() - str2.size())) == 0) {
+        int diff = 0;
+        for (int i = 0; i < int(str1.size()); i++) {
+            if (str1[i] != str2[i]) {
+                diff++;
+            }
         }
+        return diff == d;
     }
-    if(diff == 0){
-        return true;
-    }else if (diff == d && str1.size() == str2.size()){
-        return true;
+    if (abs(int(str1.size() - str2.size())) == 1) {
+        if(str1.size() > str2.size()){
+            for (int i = 0; i < int(str1.size()); i++) {
+                string new_str = str1.substr(0, i) + str1.substr(i + 1);
+                if (new_str == str2) {
+                    return true;
+                }
+            }
+        }else{
+            for (int i = 0; i < int(str2.size()); i++) {
+                string new_str = str2.substr(0, i) + str2.substr(i + 1);
+                if (new_str == str1) {
+                    return true;
+                }
+            }
+        }
+
     }
     return false;
 }
