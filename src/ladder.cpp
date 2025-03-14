@@ -53,14 +53,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         string& last_word = ladder.back();
 
         for(auto word: word_list){
-            if(!is_adjacent(word, last_word) || word == last_word){
+            if(!is_adjacent(word, last_word) || word == last_word || visited.find(word) != visited.end()){
                 continue;
             }else if (word == end_word){
                 ladder.push_back(word);
                 return ladder;
             }
 
-            if (word_list.find(word) != word_list.end() && visited.find(word) == visited.end()) {
+            if (visited.find(word) == visited.end()) {
                 visited.insert(word);
                 vector<string> new_ladder = ladder;
                 new_ladder.push_back(word);
@@ -106,10 +106,6 @@ void verify_word_ladder(){
     vector<string> word_ladder;
     set<string> dict;
     load_words(dict, "src/words.txt");
-    if(startword == endword){
-        error("", "", "words are the same");
-        return;
-    }
     word_ladder = generate_word_ladder(startword, endword, dict);
     print_word_ladder(word_ladder);
     return;
