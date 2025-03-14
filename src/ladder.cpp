@@ -42,44 +42,41 @@ bool is_adjacent(const string& word1, const string& word2){
     return false;
 }
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
-    if (word_list.find(end_word) == word_list.end()) return {};
-    set<string> visited;
-    queue<vector<string>> ladder_queue;
-    set<string> dict(word_list.begin(), word_list.end());
-    
+     if (word_list.find(end_word) == word_list.end()) return {}; // If end_word is not in dictionary, no ladder
+
+    queue<vector<string>> ladder_queue; // BFS queue
+    set<string> visited;      // Track visited words
+
     ladder_queue.push({begin_word});
     visited.insert(begin_word);
 
     while (!ladder_queue.empty()) {
-        vector<string> ladder = ladder_queue.front();
-        ladder_queue.pop();
-        string& last_word = ladder.back();
+        int level_size = ladder_queue.size();
+        set<string> level_visited; // Track words visited at this BFS level
 
-        for (int j = 0; j < int(last_word.size()); j++) {
-            string temp_word = last_word;
-            for (char c = 'a'; c <= 'z'; c++) {
-                temp_word[j] = c;
-                if (temp_word == last_word) continue;
+        for (int i = 0; i < level_size; i++) {
+            vector<string> ladder = ladder_queue.front();
+            ladder_queue.pop();
+            string last_word = ladder.back();
 
-                if (temp_word == end_word) {
-                    ladder.push_back(temp_word);
-                    return ladder;
-                }
-
-                if (dict.find(temp_word) != dict.end() && visited.find(temp_word) == visited.end()) {
-                    visited.insert(temp_word);
+            for (const auto& word : word_list) {
+                if (is_adjacent(last_word, word) && visited.find(word) == visited.end()) {
                     vector<string> new_ladder = ladder;
-                    new_ladder.push_back(temp_word);
+                    new_ladder.push_back(word);
+
+                    if (word == end_word) return new_ladder;
+
                     ladder_queue.push(new_ladder);
+                    level_visited.insert(word);
                 }
             }
-        
         }
+
+        for (const auto& w : level_visited) visited.insert(w);
     }
 
     return {};
 }
-
 void load_words(set<string> & word_list, const string& file_name){
     ifstream file(file_name);
     if (!file){
