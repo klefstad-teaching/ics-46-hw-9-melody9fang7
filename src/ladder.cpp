@@ -122,10 +122,14 @@ void verify_word_ladder(){
         return;
     }
     word_ladder = generate_word_ladder(startword, endword, dict);
-    print_word_ladder(word_ladder);
     if (word_ladder.empty()) {
+        cout << "No word ladder found." << endl;
         error("", "", "No word ladder found.");
         return;
+    }else{
+        cout << "Word ladder found:";
+        print_word_ladder(word_ladder);
+
     }
 
 }
