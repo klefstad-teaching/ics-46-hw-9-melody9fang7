@@ -37,67 +37,42 @@ bool is_adjacent(const string& word1, const string& word2){
     }
     return false;
 }
-
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
-    if (begin_word == end_word) return {};
-    if (word_list.find(end_word) == word_list.end()) return {}; 
-
-    queue<vector<string>> ladder_queue;  // Queue for BFS
-    unordered_set<string> visited;       // Track visited words
-
+    if (word_list.find(end_word) == word_list.end()) return {};
+    set<string> visited;
+    queue<vector<string>> ladder_queue;
+    set<string> dict(word_list.begin(), word_list.end());
+    
     ladder_queue.push({begin_word});
     visited.insert(begin_word);
 
     while (!ladder_queue.empty()) {
-        int level_size = ladder_queue.size();
-        unordered_set<string> level_visited;  // Track newly visited words
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
+        string& last_word = ladder.back();
 
-        for (int i = 0; i < level_size; i++) {
-            vector<string> ladder = ladder_queue.front();
-            ladder_queue.pop();
-            string last_word = ladder.back();
+        for (int j = 0; j < int(last_word.size()); j++) {
+            string temp_word = last_word;
+            for (char c = 'a'; c <= 'z'; c++) {
+                temp_word[j] = c;
+                if (temp_word == last_word) continue;
 
-            // Generate valid neighbors dynamically instead of checking all words
-            for (size_t j = 0; j < last_word.size(); j++) {
-                string temp = last_word;
-                for (char c = 'a'; c <= 'z'; c++) {
-                    if (c == last_word[j]) continue;
-                    temp[j] = c;
-                    if (word_list.count(temp) && !visited.count(temp)) {
-                        vector<string> new_ladder = ladder;
-                        new_ladder.push_back(temp);
-                        if (temp == end_word) return new_ladder;
-                        ladder_queue.push(new_ladder);
-                        level_visited.insert(temp);
-                    }
+                if (temp_word == end_word) {
+                    ladder.push_back(temp_word);
+                    return ladder;
+                }
+
+                if (dict.find(temp_word) != dict.end() && visited.find(temp_word) == visited.end()) {
+                    visited.insert(temp_word);
+                    vector<string> new_ladder = ladder;
+                    new_ladder.push_back(temp_word);
+                    ladder_queue.push(new_ladder);
                 }
             }
-
-            // Handle insertions
-            for (size_t j = 0; j <= last_word.size(); j++) {
-                for (char c = 'a'; c <= 'z'; c++) {
-                    string inserted = last_word.substr(0, j) + c + last_word.substr(j);
-                    if (word_list.count(inserted) && !visited.count(inserted)) {
-                        vector<string> new_ladder = ladder;
-                        new_ladder.push_back(inserted);
-                        if (inserted == end_word) return new_ladder;
-                        ladder_queue.push(new_ladder);
-                        level_visited.insert(inserted);
-                    }
-                }
-            }
-
-            // Handle deletions
-            if (last_word.size() > 1) {
-                for (size_t j = 0; j < last_word.size(); j++) {
-                    string deleted = last_word.substr(0, j) + last_word.substr(j + 1);
-                    if (word_list.count(deleted) && !visited.count(deleted)) {
-                        vector<string> new_ladder = ladder;
-                    }
-                }
-            }
+        
         }
     }
+
     return {};
 }
 
