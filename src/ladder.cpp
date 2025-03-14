@@ -18,7 +18,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
             if (str1[i] != str2[i]) diff++;
             if (diff > d) return false;
         }
-        return diff == d;
+        return diff <= d;
     }
 
     if (len1 > len2) return is_adjacent(str2, str1); 
