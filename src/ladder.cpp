@@ -42,6 +42,7 @@ bool is_adjacent(const string& word1, const string& word2){
     return false;
 }
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
+    if (begin_word == end_word) return {};
      if (word_list.find(end_word) == word_list.end()) return {}; // If end_word is not in dictionary, no ladder
 
     queue<vector<string>> ladder_queue; // BFS queue
@@ -52,7 +53,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     while (!ladder_queue.empty()) {
         int level_size = ladder_queue.size();
-        set<string> level_visited; // Track words visited at this BFS level
+        set<string> level_visited; 
 
         for (int i = 0; i < level_size; i++) {
             vector<string> ladder = ladder_queue.front();
@@ -68,6 +69,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
                     ladder_queue.push(new_ladder);
                     level_visited.insert(word);
+                    
                 }
             }
         }
