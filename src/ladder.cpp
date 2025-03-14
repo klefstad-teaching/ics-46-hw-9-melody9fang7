@@ -20,6 +20,9 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         }
         return diff <= d;
     }
+
+    if (len1 > len2) return is_adjacent(str2, str1); 
+
     for (int i = 0; i < len2; i++) {
         if (str1 == str2.substr(0, i) + str2.substr(i + 1)) return true;
         if (i + 1 < len1 && str2 == str2.substr(0, i) + str1.substr(i + 1)) return true;
@@ -109,4 +112,5 @@ void verify_word_ladder(){
     }
     word_ladder = generate_word_ladder(startword, endword, dict);
     print_word_ladder(word_ladder);
+    return;
 }
